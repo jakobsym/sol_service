@@ -11,7 +11,7 @@ import (
 var ErrNotFound = errors.New("not found")
 
 type tokenRepo interface {
-	Get(ctx context.Context, address string) (*model.Token, error)
+	Get(ctx context.Context, address string) (*model.TokenDetails, error)
 }
 
 type Controller struct {
@@ -22,7 +22,11 @@ func New(repo tokenRepo) *Controller {
 	return &Controller{repo: repo}
 }
 
-func (c *Controller) Get(ctx context.Context, address string) (*model.Token, error) {
+// TODO:
+// - return all token information
+// symbol, price, mc, supply, (unsure)holders?
+
+func (c *Controller) Get(ctx context.Context, address string) (*model.TokenDetails, error) {
 	res, err := c.repo.Get(ctx, address)
 	// check if error matches error from repository call
 	if err != nil && errors.Is(err, repository.ErrNotFound) {
