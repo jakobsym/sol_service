@@ -1,9 +1,13 @@
 package httphandler
 
 import (
+	"encoding/json"
+	"errors"
+	"log"
 	"net/http"
 
 	"github.com/jakobsym/sol_service/token/internal/controller/token"
+	model "github.com/jakobsym/sol_service/token/pkg"
 )
 
 type Handler struct {
@@ -21,9 +25,16 @@ func (h *Handler) GetTokenDetails(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	res, err := h.ctrl.Get(r.Context(), model.TokenAddress(address))
+	if err != nil && errors.Is(err, token.ErrNotFound) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	} else if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-	// make call to Get() handle the errors
-
-	// return the data via encode
-
+	if err := json.NewEncoder(w).Encode(&res); err != nil {
+		log.Printf("Response encode error: %v\n", err)
+	}
 }

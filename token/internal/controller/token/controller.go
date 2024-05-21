@@ -40,7 +40,7 @@ func (c *Controller) Get(ctx context.Context, address model.TokenAddress) (*mode
 		if err != nil {
 			return nil, ErrNotFound
 		}
-		return res, err
+		return res, fmt.Errorf("error getting token from mem./api req: %v\n", err)
 	}
 	return res, err
 }
