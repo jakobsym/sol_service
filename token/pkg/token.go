@@ -2,18 +2,22 @@ package model
 
 type TokenAddress string
 
-type Token struct {
-	TokenAddress  TokenAddress `json:"id"`
-	MintSymbol    string       `json:"mintSymbol"`
-	VsTokenSymbol string       `json:"VsTokenSymbol,omitempty"`
-	Price         float64      `json:"price,omitempty"`
+type APIResponse struct {
+	Data map[TokenAddress]TokenDetails `json:"data"`
 }
 
 // type TokenSymbol string
 // type TokenSupply float64
 type TokenDetails struct {
-	Symbol    string
-	Price     float64
+	Symbol        string       `json:"mintSymbol"`
+	TokenAddress  TokenAddress `json:"id"`
+	VsTokenSymbol string       `json:"VsTokenSymbol,omitempty"`
+	Price         float64      `json:"price,omitempty"`
+	Marketcap     string       `json:"marketcap,omitempty"`
+	Supply        string       `json:"supply,omitempty"`
+}
+
+type TokenMetaData struct {
 	Marketcap float64
-	Supply    string
+	Supply    float64
 }

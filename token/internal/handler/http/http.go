@@ -16,7 +16,7 @@ func New(ctrl *token.Controller) *Handler {
 
 // obtain token address(?id=mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So)
 func (h *Handler) GetTokenDetails(w http.ResponseWriter, r *http.Request) {
-	address := r.FormValue("address")
+	address := r.FormValue("id")
 	if address == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
