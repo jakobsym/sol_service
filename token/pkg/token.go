@@ -16,8 +16,3 @@ type TokenDetails struct {
 	Marketcap     string       `json:"marketcap,omitempty"`
 	Supply        string       `json:"supply,omitempty"`
 }
-
-type TokenMetaData struct {
-	Marketcap float64
-	Supply    float64
-}
