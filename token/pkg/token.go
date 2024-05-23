@@ -11,7 +11,7 @@ type APIResponse struct {
 type TokenDetails struct {
 	Symbol        string       `json:"mintSymbol"`
 	TokenAddress  TokenAddress `json:"id"`
-	VsTokenSymbol string       `json:"VsTokenSymbol,omitempty"`
+	VsTokenSymbol string       `json:"vsTokenSymbol,omitempty"`
 	Price         float64      `json:"price,omitempty"`
 	Marketcap     string       `json:"marketcap,omitempty"`
 	Supply        string       `json:"supply,omitempty"`
