@@ -1,20 +1,42 @@
 import { HeliusWalletResponse, TokenAccount, Wallet } from "../../model/wallet";
-import 'dotenv/config'
-//import MemoryRepository from "../memory/memory";
 require('dotenv').config()
 
+// TODO: The returned token 'amount' needs to be converted into a readable form
+// currently 1008892272740 actually looks like this -> 1_008_892.272740
+// TODO: returned tokens are sometimes scam tokens, need a way to filter these out
+
+const url = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;
 
 class HeliusRepository {
     private Wallet: Wallet
-    private url: string = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;
 
-    // TODO: Assign response values to HeliusWalletResponse:TokenAccount
-    // then pass these values to a Wallet, tokens will contain <TokenAccount.mint:TokenAccount.amount>
     getWalletContent = async(address: string): Promise<Wallet> => {
-        //var token_accounts: TokenAccount
         var HeliusWalletResponse: HeliusWalletResponse
-        const fetch = (await import("node-fetch")).default
-        const res = await fetch(this.url, {
+        try {
+            HeliusWalletResponse = await HeliusWalletRequest(address)
+        } catch (error) {
+            console.error("error obtaining wallet contents: ", error)
+        }
+        if(!HeliusWalletResponse.result) {
+            console.error(`empty wallet: ${address}`)
+            return this.Wallet
+        }
+
+        let tokenAccount: TokenAccount[] = HeliusWalletResponse.result.token_accounts 
+        this.Wallet.walletAddress = address
+        tokenAccount.forEach(tokenData => {
+            this.Wallet.tokens[tokenData.mint][tokenData.amount]
+        })
+        return this.Wallet
+    }
+}
+
+export const HeliusWalletRequest = async (address: string): Promise<HeliusWalletResponse>  => {
+    const fetch = (await import("node-fetch")).default
+    var resData: HeliusWalletResponse
+
+    try {
+        const res = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,12 +55,14 @@ class HeliusRepository {
                 },
             }),
         });
-
-        const data = await res.json()
-        console.log(JSON.stringify(data, null, 2))
-    
-        return this.Wallet
+        resData = await res.json() as HeliusWalletResponse
+        
+    } catch (error) {
+        console.error(`error fetching wallet contents <${address}>: `, error)
+        // will this return an empty HeliusWalletResponse?
+        let res: HeliusWalletResponse
+        return res
     }
+    return resData
 }
-
 export default new HeliusRepository()

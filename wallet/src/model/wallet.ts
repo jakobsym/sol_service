@@ -4,10 +4,13 @@ export interface Wallet {
 }
 
 export interface HeliusWalletResponse {
-    total?: number
-    limit?: number
-    page?: number
-    token_accounts: TokenAccount[]
+    jsonrpc: string
+    result: {
+        total?: number
+        limit?: number
+        page?: number
+        token_accounts: TokenAccount[]
+    }
 }
 
 export interface TokenAccount {
