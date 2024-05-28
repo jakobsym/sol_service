@@ -14,7 +14,7 @@ func New(addr string) *Gateway {
 	return &Gateway{addr: addr}
 }
 
-// get wallet content
-func (g *Gateway) Get(ctx context.Context, address string) (*model.Wallet, error) {
+// get tokendetails
+func (g *Gateway) Get(ctx context.Context, address string) (*model.TokenDetails, error) {
 	return nil, nil
 }
