@@ -10,23 +10,37 @@ const url = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KE
 class HeliusRepository {
     private Wallet: Wallet
 
+    public setWallet(address: string, tokens: Map<string, number>):Wallet {
+        return this.Wallet = {
+            walletAddress: address,
+            tokens: tokens
+        }
+    }
+
     getWalletContent = async(address: string): Promise<Wallet> => {
         var HeliusWalletResponse: HeliusWalletResponse
+        var tmpTokens: Map<string, number> = new Map()
+
         try {
             HeliusWalletResponse = await HeliusWalletRequest(address)
         } catch (error) {
             console.error("error obtaining wallet contents: ", error)
+            throw error
         }
         if(!HeliusWalletResponse.result) {
             console.error(`empty wallet: ${address}`)
             return this.Wallet
         }
 
-        let tokenAccount: TokenAccount[] = HeliusWalletResponse.result.token_accounts 
-        this.Wallet.walletAddress = address
+        let tokenAccount: TokenAccount[] = HeliusWalletResponse.result.token_accounts
+        
         tokenAccount.forEach(tokenData => {
-            this.Wallet.tokens[tokenData.mint][tokenData.amount]
+            tmpTokens.set(tokenData.mint, tokenData.amount)
         })
+
+        this.Wallet = this.setWallet(address, tmpTokens)
+        console.log(this.Wallet) 
+        
         return this.Wallet
     }
 }
