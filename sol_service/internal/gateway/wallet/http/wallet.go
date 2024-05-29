@@ -20,7 +20,8 @@ func New(addr string) *Gateway {
 
 // get wallet content by wallet address
 func (g *Gateway) Get(ctx context.Context, address string) (*model.Wallet, error) {
-	req, err := http.NewRequest(http.MethodGet, g.addr+"/wallet", nil)
+	fAddress := "http://" + g.addr
+	req, err := http.NewRequest(http.MethodGet, fAddress+"/wallet", nil)
 	if err != nil {
 		return nil, err
 	}

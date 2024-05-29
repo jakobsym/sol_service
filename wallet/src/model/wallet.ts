@@ -1,6 +1,10 @@
 export interface Wallet {
     walletAddress: string
-    tokens?: Map<string, number> // this gets sent out as the service response
+    tokens?: Map<string, number> // maps cannot be serialized, this only used internally
+}
+export interface WalletResponse {
+    walletAddress: string
+    tokens?: {[address:string]: number}
 }
 
 export interface HeliusWalletResponse {

@@ -29,7 +29,7 @@ func New(walletGateway walletGateway) *Controller {
 }
 
 func (c *Controller) Get(ctx context.Context, address string) (*model.Wallet, error) {
-	walletdata, err := c.walletGateway.Get(ctx, address)
+	walletdata, err := c.walletGateway.Get(ctx, address) // sends GET request to wallet service
 	if err != nil && errors.Is(err, gateway.ErrNotFound) {
 		return nil, ErrNotFound
 	} else if err != nil {

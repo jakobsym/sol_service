@@ -1,4 +1,4 @@
-import { HeliusWalletResponse, TokenAccount, Wallet } from "../../model/wallet";
+import { HeliusWalletResponse, TokenAccount, Wallet, WalletResponse } from "../../model/wallet";
 require('dotenv').config()
 
 // TODO: The returned token 'amount' needs to be converted into a readable form
@@ -9,15 +9,16 @@ const url = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KE
 
 class HeliusRepository {
     private Wallet: Wallet
+    private WalletResponse: WalletResponse
 
-    public setWallet(address: string, tokens: Map<string, number>):Wallet {
-        return this.Wallet = {
+    public setWalletResponse(address: string, tokens: Map<string, number>):WalletResponse {
+        return this.WalletResponse = {
             walletAddress: address,
-            tokens: tokens
+            tokens: MapToObject(tokens)
         }
     }
 
-    getWalletContent = async(address: string): Promise<Wallet> => {
+    getWalletContent = async(address: string): Promise<WalletResponse> => {
         var HeliusWalletResponse: HeliusWalletResponse
         var tmpTokens: Map<string, number> = new Map()
 
@@ -29,7 +30,7 @@ class HeliusRepository {
         }
         if(!HeliusWalletResponse.result) {
             console.error(`empty wallet: ${address}`)
-            return this.Wallet
+            return this.WalletResponse
         }
 
         let tokenAccount: TokenAccount[] = HeliusWalletResponse.result.token_accounts
@@ -38,11 +39,18 @@ class HeliusRepository {
             tmpTokens.set(tokenData.mint, tokenData.amount)
         })
 
-        this.Wallet = this.setWallet(address, tmpTokens)
-        console.log(this.Wallet) 
+        this.WalletResponse = this.setWalletResponse(address, tmpTokens)
         
-        return this.Wallet
+        return this.WalletResponse
     }
+}
+// converts inputMap: Map into an Object type
+export const MapToObject = (inputMap: Map<string, number>): {[address:string]: number} => {
+    let obj: {[address: string]: number} = {}
+    inputMap.forEach((amount: number, address: string)=> {
+        obj[address] = amount
+    })
+    return obj
 }
 
 export const HeliusWalletRequest = async (address: string): Promise<HeliusWalletResponse>  => {
