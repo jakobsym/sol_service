@@ -24,8 +24,8 @@ type Controller struct {
 	tokenGateway  tokenGateway
 }
 
-func New(walletGateway walletGateway, tokentokenGateway tokenGateway) *Controller {
-	return &Controller{walletGateway: walletGateway, tokenGateway: tokentokenGateway}
+func New(walletGateway walletGateway) *Controller {
+	return &Controller{walletGateway: walletGateway}
 }
 
 func (c *Controller) Get(ctx context.Context, address string) (*model.Wallet, error) {
