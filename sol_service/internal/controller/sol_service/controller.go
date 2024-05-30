@@ -3,6 +3,7 @@ package sol_service
 import (
 	"context"
 	"errors"
+	"log"
 
 	"github.com/jakobsym/sol_service/sol_service/internal/gateway"
 	"github.com/jakobsym/sol_service/sol_service/pkg/model"
@@ -36,6 +37,9 @@ func (c *Controller) Get(ctx context.Context, address string) (*model.Wallet, er
 		return nil, err
 	}
 	wallet := &model.Wallet{Tokens: walletdata.Tokens, WalletAddress: address}
+	log.Println("wallet content: ", wallet)
+	//log.Println("wallet tokens: ", wallet.Tokens)
+
 	// call get tokendetails here, passing a Wallet
 	// the token service willl iterate over the wallet contents assiging information to each token
 	if err != nil {

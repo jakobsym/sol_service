@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -18,4 +19,5 @@ func main() {
 	if err := http.ListenAndServe(":8083", nil); err != nil {
 		panic(err)
 	}
+	fmt.Println("This is where?")
 }

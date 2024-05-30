@@ -18,7 +18,7 @@ class HeliusRepository {
         }
     }
 
-    getWalletContent = async(address: string): Promise<WalletResponse> => {
+    public getWalletContent = async(address: string): Promise<WalletResponse> => {
         var HeliusWalletResponse: HeliusWalletResponse
         var tmpTokens: Map<string, number> = new Map()
 
@@ -40,7 +40,6 @@ class HeliusRepository {
         })
 
         this.WalletResponse = this.setWalletResponse(address, tmpTokens)
-        
         return this.WalletResponse
     }
 }
