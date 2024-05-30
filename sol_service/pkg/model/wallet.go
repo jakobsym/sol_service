@@ -7,6 +7,19 @@ type Wallet struct {
 
 type WalletFormatted struct {
 	WalletAddress string `json:"walletAddress"`
+	Tokens        map[TokenDetails]int64
 }
 
-// Tokens may need to be map[string]string for handling response
+// type TokenAddress string
+type APIResponse struct {
+	Data map[string]TokenDetails `json:"data"`
+}
+
+type TokenDetails struct {
+	Symbol        string  `json:"mintSymbol"`
+	TokenAddress  string  `json:"id"`
+	VsTokenSymbol string  `json:"vsTokenSymbol,omitempty"`
+	Price         float64 `json:"price,omitempty"`
+	Marketcap     string  `json:"marketcap,omitempty"`
+	Supply        string  `json:"supply,omitempty"`
+}

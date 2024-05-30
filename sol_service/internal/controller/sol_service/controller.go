@@ -49,6 +49,10 @@ func (c *Controller) Get(ctx context.Context, address string) (*model.WalletForm
 	return fWallet, nil
 }
 
+// FormatWallet() will make Jupiter API call to obtain tokendetail data
+// for tokens associated with wallet parameter
 func (c *Controller) FormatWallet(wallet *model.Wallet) (*model.WalletFormatted, error) {
 	return nil, nil
 }
+
+//TODO: Need way to fix amount owned to be more readable
