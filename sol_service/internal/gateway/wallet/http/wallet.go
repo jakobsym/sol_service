@@ -34,16 +34,7 @@ func (g *Gateway) Get(ctx context.Context, address string) (*model.Wallet, error
 	if err != nil {
 		return nil, err
 	}
-	// TODO: CONVERT THE RESP.BODY FROM []byte --> string
 
-	// used to test what is within resp.body
-	/*
-		res, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return nil, err
-		}
-		log.Println("resp.body: ", string(res))
-	*/
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
